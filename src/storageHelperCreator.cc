@@ -30,57 +30,66 @@ namespace helpers {
 
 #ifdef BUILD_PROXY_IO
 StorageHelperCreator::StorageHelperCreator(
-    #if WITH_CEPH
-        asio::io_service &cephService,
-    #endif
-        asio::io_service &dioService, 
-    #if WITH_S3
-        asio::io_service &s3Service,
-    #endif
-    #if WITH_SWIFT
-        asio::io_service &swiftService,
-    #endif
-        communication::Communicator &communicator, 
-        std::size_t bufferSchedulerWorkers): 
-    #if WITH_CEPH
-        m_cephService{cephService},
-    #endif
-        m_dioService{dioService},
-    #if WITH_S3
-        m_s3Service{s3Service},
-    #endif
-    #if WITH_SWIFT
-        m_swiftService{swiftService},
-    #endif
-        m_scheduler{std::make_unique<Scheduler>(bufferSchedulerWorkers)},
-        m_communicator{communicator}
+#if WITH_CEPH
+    asio::io_service &cephService,
+#endif
+    asio::io_service &dioService,
+#if WITH_S3
+    asio::io_service &s3Service,
+#endif
+#if WITH_SWIFT
+    asio::io_service &swiftService,
+#endif
+    communication::Communicator &communicator,
+    std::size_t bufferSchedulerWorkers)
+    :
+#if WITH_CEPH
+    m_cephService{cephService}
+    ,
+#endif
+    m_dioService{dioService}
+    ,
+#if WITH_S3
+    m_s3Service{s3Service}
+    ,
+#endif
+#if WITH_SWIFT
+    m_swiftService{swiftService}
+    ,
+#endif
+    m_scheduler{std::make_unique<Scheduler>(bufferSchedulerWorkers)}
+    , m_communicator{communicator}
 {
 }
 #else
 StorageHelperCreator::StorageHelperCreator(
-    #if WITH_CEPH
-        asio::io_service &cephService,
-    #endif
-        asio::io_service &dioService, 
-    #if WITH_S3
-        asio::io_service &s3Service,
-    #endif
-    #if WITH_SWIFT
-        asio::io_service &swiftService,
-    #endif
+#if WITH_CEPH
+    asio::io_service &cephService,
+#endif
+    asio::io_service &dioService,
+#if WITH_S3
+    asio::io_service &s3Service,
+#endif
+#if WITH_SWIFT
+    asio::io_service &swiftService,
+#endif
     std::size_t bufferSchedulerWorkers)
-    : 
-    #if WITH_CEPH
-        m_cephService{cephService},
-    #endif
-    m_dioService{dioService},
-    #if WITH_S3
-        m_s3Service{s3Service},
-    #endif
-    #if WITH_SWIFT
-        m_swiftService{swiftService},
-    #endif
-        m_scheduler{std::make_unique<Scheduler>(bufferSchedulerWorkers)}
+    :
+#if WITH_CEPH
+    m_cephService{cephService}
+    ,
+#endif
+    m_dioService{dioService}
+    ,
+#if WITH_S3
+    m_s3Service{s3Service}
+    ,
+#endif
+#if WITH_SWIFT
+    m_swiftService{swiftService}
+    ,
+#endif
+    m_scheduler{std::make_unique<Scheduler>(bufferSchedulerWorkers)}
 {
 }
 #endif
@@ -115,7 +124,7 @@ std::shared_ptr<StorageHelper> StorageHelperCreator::getStorageHelper(
     if (name == SWIFT_HELPER_NAME)
         helper = SwiftHelperFactory{m_swiftService}.createStorageHelper(args);
 #endif
-    
+
     if (!helper)
         throw std::system_error{
             std::make_error_code(std::errc::invalid_argument),
