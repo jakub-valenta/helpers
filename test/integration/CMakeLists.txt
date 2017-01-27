@@ -13,10 +13,16 @@ set(PROTO_DIR ${PROJECT_SOURCE_DIR}/clproto/proto)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/proto)
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/proto/__init__.py "")
 file(GLOB PROTO_FILES ${PROTO_DIR}/*.proto)
+if(APPLE)
 add_custom_target(pythonProto
+    COMMAND ${Protobuf_PROTOC_EXECUTABLE} --python_out ${CMAKE_CURRENT_BINARY_DIR}/proto -I ${PROTO_DIR} ${PROTO_FILES}
+    COMMENT "Running Python protocol buffer compiler for integration tests"
+    VERBATIM)
+else(APPLE)
     COMMAND ${PROTOBUF_PROTOC_EXECUTABLE} --python_out ${CMAKE_CURRENT_BINARY_DIR}/proto -I ${PROTO_DIR} ${PROTO_FILES}
     COMMENT "Running Python protocol buffer compiler for integration tests"
     VERBATIM)
+endif
 
 find_package(Boost COMPONENTS python REQUIRED)
 find_package(PythonLibs REQUIRED)
