@@ -13,7 +13,7 @@ set(HELPERS_SYSTEM_INCLUDE_DIRS
 
 
 if(WITH_SWIFT)
-    list(APPEND HELPERS_SYSTEM_INCLUDE_DIRS ${SWIFT_SDK_INCLUDE_DIRS})
+    LIST(APPEND HELPERS_SYSTEM_INCLUDE_DIRS ${SWIFT_SDK_INCLUDE_DIRS})
 endif(WITH_SWIFT)
 
 set(HELPERS_INCLUDE_DIRS
@@ -23,15 +23,15 @@ set(HELPERS_INCLUDE_DIRS
 file(GLOB_RECURSE HELPER_SOURCES *.cc *.h)
 
 if(NOT WITH_CEPH)
-  list(REMOVE_ITEM HELPER_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/cephHelper.cc)
+  LIST(REMOVE_ITEM HELPER_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/cephHelper.cc)
 endif(NOT WITH_CEPH)
 
 if(NOT WITH_S3)
-  list(REMOVE_ITEM HELPER_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/s3Helper.cc)
+  LIST(REMOVE_ITEM HELPER_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/s3Helper.cc)
 endif(NOT WITH_S3)
 
 if(NOT WITH_SWIFT)
-  list(REMOVE_ITEM HELPER_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/swiftHelper.cc)
+  LIST(REMOVE_ITEM HELPER_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/swiftHelper.cc)
 endif(NOT WITH_SWIFT)
 
 add_library(helpers OBJECT ${HELPER_SOURCES})
@@ -76,10 +76,17 @@ if(WITH_SWIFT)
     LIST(APPEND HELPERS_LIBRARIES ${SWIFT_SDK_LIBRARIES})
 endif(WITH_SWIFT)
 
+<<<<<<< HEAD
+# 
+# Select version of Folly, latest version available on OSX have TimedMutex
+# defined without a template
+# 
+=======
 #
 # Select version of Folly, latest version available on OSX have TimedMutex
 # defined without a template
 #
+>>>>>>> d8ac3c07cf18a4c7dc5444f1305e3ea32dd71689
 if(APPLE)
     add_definitions(-DFOLLY_TIMEDMUTEX_IS_TEMPLATE=0)
 else(APPLE)
