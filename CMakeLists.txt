@@ -153,10 +153,20 @@ add_definitions(
     -DASIO_STANDALONE
     -DGLOG_STL_LOGGING_FOR_UNORDERED)
 
-    option(BUILD_PROXY_IO "Build Proxy IO helper." ON)
-    if(BUILD_PROXY_IO)
-        add_definitions("-DBUILD_PROXY_IO")
-    endif(BUILD_PROXY_IO)
+option(BUILD_PROXY_IO "Build Proxy IO helper." ON)
+if(BUILD_PROXY_IO)
+    add_definitions("-DBUILD_PROXY_IO")
+endif(BUILD_PROXY_IO)
+
+#
+# Select version of Folly, latest version available on OSX have TimedMutex
+# defined without a template
+#
+if(APPLE)
+    add_definitions(-DFOLLY_TIMEDMUTEX_IS_TEMPLATE=0)
+else(APPLE)
+    add_definitions(-DFOLLY_TIMEDMUTEX_IS_TEMPLATE=1)
+endif(APPLE)
 
 add_subdirectory(clproto)
 add_subdirectory(${ETLS_DIR}/src)
