@@ -80,7 +80,11 @@ find_library(DL_LIBRARY dl)
 # Rados library
 if(WITH_CEPH)
 find_library(RADOS_LIBRARY rados)
+add_definitions(-DWITH_CEPH=1)
+else(WITH_CEPH)
+add_definitions(-DWITH_CEPH=0)
 endif(WITH_CEPH)
+
 
 # AWS SDK library
 if(WITH_S3)
@@ -90,9 +94,13 @@ set(AWS_SDK_LIBRARIES
     ${AWS_SKD_S3_LIBRARY}
     ${AWS_SKD_CORE_LIBRARY}
     ${CURL_LIBRARIES})
+add_definitions(-DWITH_S3=1)
+else(WITH_S3)
+add_definitions(-DWITH_S3=0)
 endif(WITH_S3)
 
 # Swift SDK library
+if(WITH_SWIFT)
 find_library(SWIFT_SDK_LIBRARY Swift)
 find_library(POCO_FOUNDATION PocoFoundation)
 find_library(POCO_NET PocoNet)
@@ -104,6 +112,10 @@ set(SWIFT_SDK_LIBRARIES
     ${POCO_NET}
     ${POCO_XML}
     ${POCO_UTIL})
+add_definitions(-DWITH_SWIFT=1)
+else(WITH_SWIFT)
+add_definitions(-DWITH_SWIFT=0)
+endif(WITH_SWIFT)
 
 # Setup compile flags
 set(PLATFORM_EXTRA_LIBS
