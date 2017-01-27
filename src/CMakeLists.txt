@@ -76,17 +76,10 @@ if(WITH_SWIFT)
     LIST(APPEND HELPERS_LIBRARIES ${SWIFT_SDK_LIBRARIES})
 endif(WITH_SWIFT)
 
-<<<<<<< HEAD
-# 
-# Select version of Folly, latest version available on OSX have TimedMutex
-# defined without a template
-# 
-=======
 #
 # Select version of Folly, latest version available on OSX have TimedMutex
 # defined without a template
 #
->>>>>>> d8ac3c07cf18a4c7dc5444f1305e3ea32dd71689
 if(APPLE)
     add_definitions(-DFOLLY_TIMEDMUTEX_IS_TEMPLATE=0)
 else(APPLE)
