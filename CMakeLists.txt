@@ -63,9 +63,9 @@ set(ETLS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/etls/c_src)
 
 # Setup BoringSSL
 if(NOT WITH_OPENSSL)
-add_subdirectory(${ETLS_DIR}/deps/boringssl)
-set(BORINGSSL_LIBRARIES ssl crypto)
-set(BORINGSSL_INCLUDE_DIRS ${ETLS_DIR}/deps/boringssl/include)
+  add_subdirectory(${ETLS_DIR}/deps/boringssl)
+  set(BORINGSSL_LIBRARIES ssl crypto)
+  set(BORINGSSL_INCLUDE_DIRS ${ETLS_DIR}/deps/boringssl/include)
 endif(NOT WITH_OPENSSL)
 
 # Setup Asio
@@ -79,42 +79,41 @@ find_library(DL_LIBRARY dl)
 
 # Rados library
 if(WITH_CEPH)
-find_library(RADOS_LIBRARY rados)
-add_definitions(-DWITH_CEPH=1)
+  find_library(RADOS_LIBRARY rados)
+  add_definitions(-DWITH_CEPH=1)
 else(WITH_CEPH)
-add_definitions(-DWITH_CEPH=0)
+  add_definitions(-DWITH_CEPH=0)
 endif(WITH_CEPH)
-
 
 # AWS SDK library
 if(WITH_S3)
-find_library(AWS_SKD_CORE_LIBRARY aws-cpp-sdk-core)
-find_library(AWS_SKD_S3_LIBRARY aws-cpp-sdk-s3)
-set(AWS_SDK_LIBRARIES
-    ${AWS_SKD_S3_LIBRARY}
-    ${AWS_SKD_CORE_LIBRARY}
-    ${CURL_LIBRARIES})
-add_definitions(-DWITH_S3=1)
+  find_library(AWS_SKD_CORE_LIBRARY aws-cpp-sdk-core)
+  find_library(AWS_SKD_S3_LIBRARY aws-cpp-sdk-s3)
+  set(AWS_SDK_LIBRARIES
+      ${AWS_SKD_S3_LIBRARY}
+      ${AWS_SKD_CORE_LIBRARY}
+      ${CURL_LIBRARIES})
+  add_definitions(-DWITH_S3=1)
 else(WITH_S3)
-add_definitions(-DWITH_S3=0)
+  add_definitions(-DWITH_S3=0)
 endif(WITH_S3)
 
 # Swift SDK library
 if(WITH_SWIFT)
-find_library(SWIFT_SDK_LIBRARY Swift)
-find_library(POCO_FOUNDATION PocoFoundation)
-find_library(POCO_NET PocoNet)
-find_library(POCO_XML PocoXML)
-find_library(POCO_UTIL PocoUtil)
-set(SWIFT_SDK_LIBRARIES
-    ${SWIFT_SDK_LIBRARY}
-    ${POCO_FOUNDATION}
-    ${POCO_NET}
-    ${POCO_XML}
-    ${POCO_UTIL})
-add_definitions(-DWITH_SWIFT=1)
+  find_library(SWIFT_SDK_LIBRARY Swift)
+  find_library(POCO_FOUNDATION PocoFoundation)
+  find_library(POCO_NET PocoNet)
+  find_library(POCO_XML PocoXML)
+  find_library(POCO_UTIL PocoUtil)
+  set(SWIFT_SDK_LIBRARIES
+      ${SWIFT_SDK_LIBRARY}
+      ${POCO_FOUNDATION}
+      ${POCO_NET}
+      ${POCO_XML}
+      ${POCO_UTIL})
+  add_definitions(-DWITH_SWIFT=1)
 else(WITH_SWIFT)
-add_definitions(-DWITH_SWIFT=0)
+  add_definitions(-DWITH_SWIFT=0)
 endif(WITH_SWIFT)
 
 # Setup compile flags
@@ -134,12 +133,12 @@ endif(CODE_COVERAGE)
 
 
 if(APPLE)
-    set(SECTION_FRAGMENTATION_FLAGS -Wno-deprecated-declarations)
-    set(CUSTOM_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+  set(SECTION_FRAGMENTATION_FLAGS -Wno-deprecated-declarations)
+  set(CUSTOM_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 else(NOT APPLE)
-    set(PLATFORM_EXTRA_LIBS ${PLATFORM_EXTRA_LIBS} ${RT_LIBRARY})
-    set(SECTION_FRAGMENTATION_FLAGS -fdata-sections -ffunction-sections)
-    set(CUSTOM_RPATH "${CMAKE_INSTALL_PREFIX}/lib" "\$ORIGIN")
+  set(PLATFORM_EXTRA_LIBS ${PLATFORM_EXTRA_LIBS} ${RT_LIBRARY})
+  set(SECTION_FRAGMENTATION_FLAGS -fdata-sections -ffunction-sections)
+  set(CUSTOM_RPATH "${CMAKE_INSTALL_PREFIX}/lib" "\$ORIGIN")
 endif(APPLE)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
@@ -155,7 +154,7 @@ add_definitions(
 
 option(BUILD_PROXY_IO "Build Proxy IO helper." ON)
 if(BUILD_PROXY_IO)
-    add_definitions("-DBUILD_PROXY_IO")
+  add_definitions("-DBUILD_PROXY_IO")
 endif(BUILD_PROXY_IO)
 
 #
@@ -163,9 +162,9 @@ endif(BUILD_PROXY_IO)
 # defined without a template
 #
 if(APPLE)
-    add_definitions(-DFOLLY_TIMEDMUTEX_IS_TEMPLATE=0)
+  add_definitions(-DFOLLY_TIMEDMUTEX_IS_TEMPLATE=0)
 else(APPLE)
-    add_definitions(-DFOLLY_TIMEDMUTEX_IS_TEMPLATE=1)
+  add_definitions(-DFOLLY_TIMEDMUTEX_IS_TEMPLATE=1)
 endif(APPLE)
 
 add_subdirectory(clproto)
