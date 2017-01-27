@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(helpers C CXX)
 
+option(WITH_OPENSSL "Use OpenSSL instead of BoringSSL" OFF)
+option(WITH_CEPH "Include Ceph direct IO support" ON)
+option(WITH_S3 "Include S3 direct IO support" ON)
+option(WITH_SWIFT "Include Swift direct IO support" ON)
+
 # CMake config
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY True)
 set(CMAKE_FIND_FRAMEWORK LAST)
@@ -57,9 +62,11 @@ find_package(Boost COMPONENTS atomic chrono context date_time filesystem
 set(ETLS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/etls/c_src)
 
 # Setup BoringSSL
+if(NOT WITH_OPENSSL)
 add_subdirectory(${ETLS_DIR}/deps/boringssl)
 set(BORINGSSL_LIBRARIES ssl crypto)
 set(BORINGSSL_INCLUDE_DIRS ${ETLS_DIR}/deps/boringssl/include)
+endif(NOT WITH_OPENSSL)
 
 # Setup Asio
 set(ASIO_INCLUDE_DIRS ${ETLS_DIR}/deps/asio/asio/include)
@@ -71,15 +78,19 @@ find_library(RT_LIBRARY rt)
 find_library(DL_LIBRARY dl)
 
 # Rados library
+if(WITH_CEPH)
 find_library(RADOS_LIBRARY rados)
+endif(WITH_CEPH)
 
 # AWS SDK library
+if(WITH_S3)
 find_library(AWS_SKD_CORE_LIBRARY aws-cpp-sdk-core)
 find_library(AWS_SKD_S3_LIBRARY aws-cpp-sdk-s3)
 set(AWS_SDK_LIBRARIES
     ${AWS_SKD_S3_LIBRARY}
     ${AWS_SKD_CORE_LIBRARY}
     ${CURL_LIBRARIES})
+endif(WITH_S3)
 
 # Swift SDK library
 find_library(SWIFT_SDK_LIBRARY Swift)
@@ -123,7 +134,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 add_compile_options(${SECTION_FRAGMENTATION_FLAGS} -Werror -Wshadow -Wall -Wpedantic)
 add_definitions(
     ${FUSE_DEFINITIONS}
-    -DFUSE_USE_VERSION=29
+    -DFUSE_USE_VERSION=30
     -DBOOST_BIND_NO_PLACEHOLDERS
     -DBOOST_FILESYSTEM_NO_DEPRECATED
     -DBOOST_ALL_DYN_LINK
