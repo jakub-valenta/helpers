@@ -16,7 +16,7 @@ compile:
 	# Replace local git repo references in rebar.lock with GitHub
 	# to enable builds without accessing private repository
 	#
-	@ if ! [[ x"${ONEDATA_GIT_URL}" == "x" ]] && [[ -f ./rebar.lock ]]; then \
+	@ if [ ! x"${ONEDATA_GIT_URL}" == "x" ] && [ -f ./rebar.lock ]; then \
 		sed -i.bak 's/ssh:\/\/git@git\.plgrid\.pl:7999\/vfs/https:\/\/github.com\/onedata/g' rebar.lock; \
 	fi
 	./rebar3 compile

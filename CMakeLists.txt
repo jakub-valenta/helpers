@@ -181,6 +181,21 @@ target_include_directories(helpersStatic PUBLIC ${HELPERS_INCLUDE_DIRS})
 set_target_properties(helpersStatic PROPERTIES
     OUTPUT_NAME helpers)
 
+if(WITH_CEPH)
+  add_definitions(-DWITH_CEPH=1)
+  list(APPEND HELPERS_LIBRARIES ${RADOS_LIBRARY})
+endif(WITH_CEPH)
+
+if(WITH_S3)
+  add_definitions(-DWITH_S3=1)
+  list(APPEND HELPERS_LIBRARIES ${AWS_SDK_LIBRARIES})
+endif(WITH_S3)
+
+if(WITH_SWIFT)
+  add_definitions(-DWITH_SWIFT=1)
+  list(APPEND HELPERS_LIBRARIES ${SWIFT_SDK_LIBRARIES})
+endif(WITH_SWIFT)
+
 add_library(helpersShared SHARED ${HELPERS_SOURCES})
 target_link_libraries(helpersShared PUBLIC ${HELPERS_LIBRARIES})
 target_include_directories(helpersShared SYSTEM PUBLIC ${HELPERS_SYSTEM_INCLUDE_DIRS})

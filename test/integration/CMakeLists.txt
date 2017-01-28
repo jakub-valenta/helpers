@@ -17,7 +17,7 @@ file(GLOB PROTO_FILES ${PROTO_DIR}/*.proto)
 if(APPLE AND Protobuf_PROTOC_EXECUTABLE)
   # On OSX cmake generates the protoc executable variable with small caps
   # name so we have to manually set the capitalized version
-  set(PROTOBUF_PROTOC_EXECUTABLE Protobuf_PROTOC_EXECUTABLE)
+  set(PROTOBUF_PROTOC_EXECUTABLE ${Protobuf_PROTOC_EXECUTABLE})
 endif(APPLE AND Protobuf_PROTOC_EXECUTABLE)
 
 add_custom_target(pythonProto
