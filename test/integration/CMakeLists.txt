@@ -31,6 +31,21 @@ include_directories(SYSTEM ${PYTHON_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 remove_definitions(-DBOOST_BIND_NO_PLACEHOLDERS)
 
 file(GLOB TEST_DIRS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *_test)
+#
+# Remove helper test when building without them
+#
+if(NOT WITH_CEPH)
+    list(REMOVE_ITEM TEST_DIRS  ceph_helper_test)
+endif(NOT WITH_CEPH)
+
+if(NOT WITH_S3)
+    list(REMOVE_ITEM TEST_DIRS  s3_helper_test)
+endif(NOT WITH_S3)
+
+if(NOT WITH_SWIFT)
+    list(REMOVE_ITEM TEST_DIRS  swift_helper_test)
+endif(NOT WITH_SWIFT)
+
 foreach(TEST_DIR ${TEST_DIRS})
     string(REGEX REPLACE "(.*)_test" "\\1" TEST_NAME ${TEST_DIR})
     file(COPY ${TEST_DIR} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

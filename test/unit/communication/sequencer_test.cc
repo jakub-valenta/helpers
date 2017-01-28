@@ -35,7 +35,7 @@ inline std::unique_ptr<clproto::ServerMessage> streamMessage(
     if (endOfStm)
         serverMsg->mutable_end_of_stream();
 
-    return std::move(serverMsg);
+    return serverMsg;
 }
 
 struct LowerLayer {

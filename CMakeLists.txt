@@ -113,7 +113,7 @@ if(WITH_SWIFT)
         ${POCO_UTIL})
     add_definitions(-DWITH_SWIFT=1)
 else(WITH_SWIFT)
-  add_definitions(-DWITH  _SWIFT=0)
+    add_definitions(-DWITH_SWIFT=0)
 endif(WITH_SWIFT)
 
 # Setup compile flags
