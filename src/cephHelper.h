@@ -14,9 +14,7 @@
 #include "asioExecutor.h"
 
 #include <folly/Executor.h>
-#if WITH_CEPH
 #include <rados/librados.hpp>
-#endif
 #include <asio.hpp>
 
 namespace one {

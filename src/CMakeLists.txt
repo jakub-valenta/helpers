@@ -11,9 +11,11 @@ set(HELPERS_SYSTEM_INCLUDE_DIRS
     ${ETLS_INCLUDE_DIRS}
     ${FOLLY_INCLUDE_DIR})
 
-
+#
+# Add Swift include dir when building with Swift helper
+#
 if(WITH_SWIFT)
-    LIST(APPEND HELPERS_SYSTEM_INCLUDE_DIRS ${SWIFT_SDK_INCLUDE_DIRS})
+    list(APPEND HELPERS_SYSTEM_INCLUDE_DIRS ${SWIFT_SDK_INCLUDE_DIRS})
 endif(WITH_SWIFT)
 
 set(HELPERS_INCLUDE_DIRS
@@ -22,16 +24,19 @@ set(HELPERS_INCLUDE_DIRS
 
 file(GLOB_RECURSE HELPER_SOURCES *.cc *.h)
 
+#
+# Remove helper sources when building without them
+#
 if(NOT WITH_CEPH)
-  LIST(REMOVE_ITEM HELPER_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/cephHelper.cc)
+    list(REMOVE_ITEM HELPER_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/cephHelper.cc)
 endif(NOT WITH_CEPH)
 
 if(NOT WITH_S3)
-  LIST(REMOVE_ITEM HELPER_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/s3Helper.cc)
+    list(REMOVE_ITEM HELPER_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/s3Helper.cc)
 endif(NOT WITH_S3)
 
 if(NOT WITH_SWIFT)
-  LIST(REMOVE_ITEM HELPER_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/swiftHelper.cc)
+    list(REMOVE_ITEM HELPER_SOURCES  ${CMAKE_CURRENT_SOURCE_DIR}/swiftHelper.cc)
 endif(NOT WITH_SWIFT)
 
 add_library(helpers OBJECT ${HELPER_SOURCES})
@@ -60,31 +65,6 @@ set(HELPERS_LIBRARIES
     ${NSS_LIBRARIES}
     ${FOLLY_LIBRARIES}
     PARENT_SCOPE)
-
-if(WITH_CEPH)
-    add_definitions(-DWITH_CEPH=1)
-    LIST(APPEND HELPERS_LIBRARIES ${RADOS_LIBRARY})
-endif(WITH_CEPH)
-
-if(WITH_S3)
-    add_definitions(-DWITH_S3=1)
-    LIST(APPEND HELPERS_LIBRARIES ${AWS_SDK_LIBRARIES})
-endif(WITH_S3)
-
-if(WITH_SWIFT)
-    add_definitions(-DWITH_SWIFT=1)
-    LIST(APPEND HELPERS_LIBRARIES ${SWIFT_SDK_LIBRARIES})
-endif(WITH_SWIFT)
-
-#
-# Select version of Folly, latest version available on OSX have TimedMutex
-# defined without a template
-#
-if(APPLE)
-    add_definitions(-DFOLLY_TIMEDMUTEX_IS_TEMPLATE=0)
-else(APPLE)
-    add_definitions(-DFOLLY_TIMEDMUTEX_IS_TEMPLATE=1)
-endif(APPLE)
 
 set(PROJECT_SOURCES
     $<TARGET_OBJECTS:helpers>

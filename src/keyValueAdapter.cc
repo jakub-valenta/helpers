@@ -244,8 +244,8 @@ folly::Future<folly::IOBufQueue> KeyValueFileHandle::readBlocks(
          blockOffset = 0, ++blockId) {
 
         const auto blockSize =
-            std::min(static_cast<std::size_t>(m_blockSize - blockOffset), 
-                     static_cast<std::size_t>(size - bufOffset));
+            std::min(static_cast<std::size_t>(m_blockSize - blockOffset),
+                static_cast<std::size_t>(size - bufOffset));
 
         auto readFuture = via(m_executor.get(), [
             this, blockId, blockOffset, blockSize, self = shared_from_this()

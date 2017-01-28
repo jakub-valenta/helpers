@@ -24,7 +24,7 @@
 
 
 #if defined(__APPLE__)
-// There is no spinlock on OSX and Folly TimedMutex does have an ifded
+// There is no spinlock on OSX and Folly TimedMutex doesn't have an ifded
 // to detect this.
 typedef pthread_rwlock_t pthread_spinlock_t;
 #endif

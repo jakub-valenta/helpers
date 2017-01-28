@@ -214,7 +214,8 @@ const asio::error_code& engine::map_error_code(
     return ec;
 
   // Otherwise, the peer should have negotiated a proper shutdown.
-  if ((::SSL_get_shutdown(ssl_) & SSL_RECEIVED_SHUTDOWN) == 0) {
+  if ((::SSL_get_shutdown(ssl_) & SSL_RECEIVED_SHUTDOWN) == 0)
+  {
       ec = asio::error_code(
 #ifdef OPENSSL_IS_BORINGSSL
           ERR_PACK(ERR_LIB_SSL, SSL_R_UNEXPECTED_RECORD),
