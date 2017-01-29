@@ -1,0 +1,59 @@
+branches:
+  only:
+    - develop-osx
+    - develop
+
+language: cpp
+
+os:
+  - osx
+
+compiler:
+  - clang
+
+osx_image: xcode8.2
+
+env:
+  - ONEDATA_GIT_URL="https://github.com/onedata"
+
+cache:
+  directories:
+    - $HOME/Library/Caches/Homebrew
+
+before_install:
+  - brew update
+  - brew outdated git || brew install git
+  - brew outdated pkgconfig || brew install pkgconfig
+  - brew install gnu-sed --with-default-names && brew link --force gnu-sed
+  - brew install python3 && brew linkapps python3
+  - brew unlink boost && brew install boost
+  - wget -O ../boost-python-1.63.0.sierra.bottle.1.tar.gz https://bintray.com/bkryza/onedata-cellar/download_file?file_path=boost-python-1.63.0.sierra.bottle.1.tar.gz
+  - brew install ../boost-python-1.63.0.sierra.bottle.1.tar.gz
+  - brew outdated libtool || brew install libtool
+  - brew install libsodium && brew link --force libsodium
+  - brew outdated tbb || brew install tbb
+  - brew install ninja && brew link --force ninja
+  - brew outdated poco || brew install poco
+  - brew outdated aws-sdk-cpp || brew install aws-sdk-cpp
+  - brew outdated folly || brew install folly
+  - brew outdated libevent || brew install libevent
+  - brew outdated openssl || brew install openssl
+  - brew outdated nspr || brew install nspr
+  - brew install nss && brew unlink nss && brew link --force nss
+  - brew install tbb && brew unlink tbb && brew link tbb
+  - brew install glog && brew unlink glog && brew link glog
+  - brew install folly && brew link --force folly
+  - brew install protobuf && brew link --force protobuf
+  - brew install protobuf-c && brew link --force protobuf-c
+  - brew install erlang && brew link --force erlang
+  - brew tap bkryza/onedata
+  - brew install libiberty && brew link --force libiberty
+  - brew install Caskroom/cask/osxfuse
+
+
+script:
+  - make debug WITH_CEPH=OFF WITH_S3=OFF WITH_SWIFT=OFF WITH_OPENSSL=OFF OPENSSL_ROOT_DIR=/usr/local/opt/openssl OPENSSL_LIBRARIES=/usr/local/opt/openssl/lib
+  - make test
+  - make cunit
+
+after_script: set +e
