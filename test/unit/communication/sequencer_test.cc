@@ -278,6 +278,6 @@ TEST_F(SequencerTest, sequencerShouldSendMultipleMessageAcknowledgementMessages)
     for (auto i : n)
         sequenceOnMessageCallback(streamMessage(1, i));
 
-    EXPECT_GE(1, msgAckCtr);
+    EXPECT_GE(msgAckCtr, 1);
     EXPECT_EQ(10 * STREAM_MSG_ACK_WINDOW - 1, lastSeqNum);
 }
