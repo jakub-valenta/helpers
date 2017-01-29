@@ -25,16 +25,15 @@ upgrade:
 
 compile:
 	@echo "======================================================================"
-	@echo "Using $(ONEDATA_GIT_URL) as default Git repository"
+	@echo "Using $(ONEDATA_GIT_URL) for fetching dependencies                    "
 	@echo "======================================================================"
 	@echo ""
-	@ if [ ! x"$(GIT_URL)" == x"$(ONEDATA_GIT_URL)" ] && [ -f ./rebar.lock ]; then \
-		cp ./rebar.lock rebar.lock.backup; \
-		sed -i.bak "s|ssh://git@git\.plgrid\.pl:7999/vfs|$(ONEDATA_GIT_URL)|g" rebar.lock; \
+	@ if [ -f ./rebar.lock ]; then \
+		sed -i.bak "s|ssh://git@git\.plgrid\.pl:7999/vfs|${ONEDATA_GIT_URL}|g" rebar.lock; \
 	fi
 	./rebar3 compile
-	@ if [ -f ./rebar.lock.backup ]; then \
-		mv ./rebar.lock.backup rebar.lock; \
+	@ if [ -f ./rebar.lock.bak ]; then \
+		mv ./rebar.lock.bak rebar.lock; \
 	fi
 
 rel: compile
@@ -47,8 +46,8 @@ clean:
 	#
 	# Restore the rebar.lock if backup exists after failed build
 	#
-	@ if [ -f ./rebar.lock.backup ]; then \
-		mv ./rebar.lock.backup rebar.lock; \
+	@ if [ -f ./rebar.lock.bak ]; then \
+		mv ./rebar.lock.bak rebar.lock; \
 	fi
 	./rebar3 clean
 
