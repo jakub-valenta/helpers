@@ -1,6 +1,8 @@
 helpers
 =======
 
+[![Build Status](https://api.travis-ci.org/onedata/helpers.svg?branch=develop)](https://travis-ci.org/onedata/helpers)
+
 *helpers* is a part of *onedata* system that unifies access to files stored at heterogeneous data storage systems that belong
 to geographically distributed organizations.
 
