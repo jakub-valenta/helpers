@@ -27,6 +27,8 @@ before_install:
   - brew install gnu-sed --with-default-names && brew link --force gnu-sed
   - brew install python3 && brew linkapps python3
   - brew unlink boost && brew install boost
+  - wget -O ../boost-python-1.63.0.sierra.bottle.1.tar.gz https://bintray.com/bkryza/onedata-cellar/download_file?file_path=boost-python-1.63.0.sierra.bottle.1.tar.gz
+  - brew install ../boost-python-1.63.0.sierra.bottle.1.tar.gz
   - brew outdated libtool || brew install libtool
   - brew install libsodium && brew link --force libsodium
   - brew outdated tbb || brew install tbb
