@@ -81,9 +81,9 @@ public:
 #ifdef BUILD_PROXY_IO
     StorageHelperCreator(
 #if WITH_CEPH
-        asio::io_service &ceph_service,
+        asio::io_service &cephService,
 #endif
-        asio::io_service &dio_service,
+        asio::io_service &dioService,
 #if WITH_S3
         asio::io_service &kvS3Service,
 #endif
@@ -96,9 +96,9 @@ public:
 #else
     StorageHelperCreator(
 #if WITH_CEPH
-        asio::io_service &ceph_service,
+        asio::io_service &cephService,
 #endif
-        asio::io_service &dio_service,
+        asio::io_service &dioService,
 #if WITH_S3
         asio::io_service &kvS3Service,
 #endif
@@ -106,6 +106,7 @@ public:
         asio::io_service &kvSwiftService,
         std::size_t bufferSchedulerWorkers = 1,
         buffering::BufferLimits bufferLimits = buffering::BufferLimits{});
+#endif
 #endif
 
     virtual ~StorageHelperCreator();

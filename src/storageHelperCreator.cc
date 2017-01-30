@@ -107,6 +107,9 @@ std::shared_ptr<StorageHelper> StorageHelperCreator::getStorageHelper(
 {
     StorageHelperPtr helper;
 
+    if (name == POSIX_HELPER_NAME)
+        helper = PosixHelperFactory{m_dioService}.createStorageHelper(args);
+
 #if WITH_CEPH
     if (name == CEPH_HELPER_NAME)
         helper = CephHelperFactory{m_cephService}.createStorageHelper(args);
