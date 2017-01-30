@@ -5,16 +5,17 @@ branches:
 
 language: cpp
 
-os:
-  - osx
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode8.2 # Build on macOS Sierra (10.12)
+      compiler: clang
+      env: ONEDATA_GIT_URL="https://github.com/onedata" OSX_CODENAME=sierra
 
-compiler:
-  - clang
-
-osx_image: xcode8.2
-
-env:
-  - ONEDATA_GIT_URL="https://github.com/onedata"
+    - os: osx
+      osx_image: xcode8 # Build on macOS El Capitan (10.11)
+      compiler: clang
+      env: ONEDATA_GIT_URL="https://github.com/onedata" OSX_CODENAME=el_capitan
 
 cache:
   directories:
@@ -27,8 +28,8 @@ before_install:
   - brew install gnu-sed --with-default-names && brew link --force gnu-sed
   - brew install python3 && brew linkapps python3
   - brew unlink boost && brew install boost
-  - wget -O ../boost-python-1.63.0.sierra.bottle.1.tar.gz https://bintray.com/bkryza/onedata-cellar/download_file?file_path=boost-python-1.63.0.sierra.bottle.1.tar.gz
-  - brew install ../boost-python-1.63.0.sierra.bottle.1.tar.gz
+  - wget -O ../boost-python-1.63.0.bottle.1.tar.gz https://bintray.com/bkryza/onedata-cellar/download_file?file_path=boost-python-1.63.0.${OSX_CODENAME}.bottle.1.tar.gz
+  - brew install ../boost-python-1.63.0.bottle.1.tar.gz
   - brew outdated libtool || brew install libtool
   - brew install libsodium && brew link --force libsodium
   - brew outdated tbb || brew install tbb
