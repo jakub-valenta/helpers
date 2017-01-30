@@ -23,7 +23,6 @@ cache:
 
 before_install:
   - brew update
-  - brew outdated git || brew install git
   - brew outdated pkgconfig || brew install pkgconfig
   - brew install gnu-sed --with-default-names && brew link --force gnu-sed
   - brew install python3 && brew linkapps python3
