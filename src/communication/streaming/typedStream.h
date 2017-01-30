@@ -22,17 +22,20 @@
 #include <mutex>
 #include <shared_mutex>
 #include <vector>
+/**
+ * std::<shared_timed_mutex> on OSX is available only since
+ * macOS Sierra (10.12), so use folly::SharedMutex on older OSX version.
+ */
+#if defined(__APPLE__) && (MAC_OS_X_VERSION_MAX_ALLOWED < 101200)
+#include <folly/SharedMutex.h>
+#endif
 
 namespace one {
 namespace communication {
 namespace streaming {
 
-/**
- * std::<shared_timed_mutex> on OSX is available only since
- * macOS Sierra (10.12).
- */
-#if defined(__APPLE__) && !(__MAC_OS_X_VERSION_MAX_ALLOWED >= 1012)
-using BufferMutexType = std::shared_mutex;
+#if defined(__APPLE__) && (MAC_OS_X_VERSION_MAX_ALLOWED < 101200)
+using BufferMutexType = folly::SharedMutex;
 #else
 using BufferMutexType = std::shared_timed_mutex;
 #endif

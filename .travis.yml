@@ -38,13 +38,13 @@ before_install:
   - brew install nss && brew unlink nss && brew link --force nss
   - brew install tbb && brew unlink tbb && brew link --force tbb
   - brew install glog && brew unlink glog && brew link glog
-  - brew install folly && brew link --force folly
-  - brew install protobuf && brew link --force protobuf
-  - brew install protobuf-c && brew link --force protobuf-c
-  - brew install erlang && brew link --force erlang
+  - brew install folly
+  - brew install protobuf
+  - brew install protobuf-c
+  - brew install erlang
   - brew install aws-sdk-cpp
   - brew tap onedata/onedata
-  - brew install libiberty && brew link --force libiberty
+  - brew install libiberty
   - brew install Caskroom/cask/osxfuse
 
 
