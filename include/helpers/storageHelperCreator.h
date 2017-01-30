@@ -44,6 +44,35 @@ constexpr auto S3_HELPER_NAME = "s3";
 constexpr auto SWIFT_HELPER_NAME = "swift";
 #endif
 
+namespace buffering {
+
+struct BufferLimits {
+    BufferLimits(std::size_t readBufferMinSize_ = 1 * 1024 * 1024,
+        std::size_t readBufferMaxSize_ = 50 * 1024 * 1024,
+        std::chrono::seconds readBufferPrefetchDuration_ =
+            std::chrono::seconds{1},
+        std::size_t writeBufferMinSize_ = 1 * 1024 * 1024,
+        std::size_t writeBufferMaxSize_ = 50 * 1024 * 1024,
+        std::chrono::seconds writeBufferFlushDelay_ = std::chrono::seconds{1})
+        : readBufferMinSize{readBufferMinSize_}
+        , readBufferMaxSize{readBufferMaxSize_}
+        , readBufferPrefetchDuration{std::move(readBufferPrefetchDuration_)}
+        , writeBufferMinSize{writeBufferMinSize_}
+        , writeBufferMaxSize{writeBufferMaxSize_}
+        , writeBufferFlushDelay{std::move(writeBufferFlushDelay_)}
+    {
+    }
+
+    std::size_t readBufferMinSize;
+    std::size_t readBufferMaxSize;
+    std::chrono::seconds readBufferPrefetchDuration;
+    std::size_t writeBufferMinSize;
+    std::size_t writeBufferMaxSize;
+    std::chrono::seconds writeBufferFlushDelay;
+};
+
+} // namespace buffering
+
 /**
  * Factory providing objects of requested storage helpers.
  */
@@ -52,9 +81,9 @@ public:
 #ifdef BUILD_PROXY_IO
     StorageHelperCreator(
 #if WITH_CEPH
-        asio::io_service &ceph_service,
+        asio::io_service &cephService,
 #endif
-        asio::io_service &dio_service,
+        asio::io_service &dioService,
 #if WITH_S3
         asio::io_service &kvS3Service,
 #endif
@@ -62,20 +91,22 @@ public:
         asio::io_service &kvSwiftService,
 #endif
         communication::Communicator &m_communicator,
-        std::size_t bufferSchedulerWorkers = 1);
+        std::size_t bufferSchedulerWorkers = 1,
+        buffering::BufferLimits bufferLimits = buffering::BufferLimits{});
 #else
     StorageHelperCreator(
 #if WITH_CEPH
-        asio::io_service &ceph_service,
+        asio::io_service &cephService,
 #endif
-        asio::io_service &dio_service,
+        asio::io_service &dioService,
 #if WITH_S3
         asio::io_service &kvS3Service,
 #endif
 #if WITH_SWIFT
         asio::io_service &kvSwiftService,
+        std::size_t bufferSchedulerWorkers = 1,
+        buffering::BufferLimits bufferLimits = buffering::BufferLimits{});
 #endif
-        std::size_t bufferSchedulerWorkers = 1);
 #endif
 
     virtual ~StorageHelperCreator();
@@ -90,7 +121,7 @@ public:
     virtual std::shared_ptr<StorageHelper> getStorageHelper(
         const folly::fbstring &sh,
         const std::unordered_map<folly::fbstring, folly::fbstring> &args,
-        const bool buffered = false);
+        const bool buffered = true);
 
 private:
 #if WITH_CEPH
@@ -104,6 +135,7 @@ private:
     asio::io_service &m_swiftService;
 #endif
     std::unique_ptr<Scheduler> m_scheduler;
+    buffering::BufferLimits m_bufferLimits;
 
 #ifdef BUILD_PROXY_IO
     communication::Communicator &m_communicator;

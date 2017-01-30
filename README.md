@@ -56,12 +56,12 @@ be added to the make command line:
 * WITH_SWIFT=OFF - disables Swift helper
 
 Additionaly, helpers can be built with OpenSSL instead of BoringSSL by passing
-the following option on the make command line:
+the following option to the make command line:
 
 * WITH_OPENSSL=ON
 
 In order to build the helpers using other Git repository than default, environment
-variable ONEDATA_GIT_URL must be exported before calling make, e.g.:
+variable ONEDATA_GIT_URL must be exported before calling `make`, e.g.:
 
     export ONEDATA_GIT_URL=https://github.com/onedata
 
@@ -75,6 +75,14 @@ variable ONEDATA_GIT_URL must be exported before calling make, e.g.:
 
 after this step you should have your libhelpers.a and libhelpers.so/dylib in "release" or "debug" subdirectory.
 
+#### Building on OSX
+
+In order to build `helpers` on OSX all dependecies must be installed using
+Homebrew (see [Travis build specification](.travis.yml)). Currently helpers for
+Ceph, S3 and Swift are not supported on OSX, furthermore NSS library is by
+default linked to a special folder on OSX, thus:
+
+    PKG_CONFIG_PATH=/usr/local/opt/nss/lib/pkgconfig make release WITH_CEPH=OFF WITH_S3=OFF WITH_SWIFT=OFF
 
 #### Testing
 
@@ -87,7 +95,3 @@ which has summarized output (per test case) and:
     make -s cunit
 
 which shows detailed test results.
-
-Support
--------
-For more information visit project *Confluence* or write to <wrzeszcz@agh.edu.pl>.
