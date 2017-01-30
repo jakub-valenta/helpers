@@ -32,7 +32,7 @@
 /**
  * These funtions provide drop-in replacements for setfsuid and setfsgid on OSX
  */
-static __inline int setfsuid(uid_t uid)
+static inline int setfsuid(uid_t uid)
 {
     uid_t olduid = geteuid();
 
@@ -44,7 +44,7 @@ static __inline int setfsuid(uid_t uid)
     return olduid;
 }
 
-static __inline int setfsgid(gid_t gid)
+static inline int setfsgid(gid_t gid)
 {
     gid_t oldgid = getegid();
 
