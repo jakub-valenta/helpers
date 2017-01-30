@@ -25,7 +25,7 @@ before_install:
   - brew update
   - brew install gnu-sed --with-default-names && brew link --force gnu-sed
   - brew install python3 && brew linkapps python3
-  - brew outdated boost && brew upgrade boost
+  - brew outdated boost || brew upgrade boost
   - wget -O ../boost-python-1.63.0.bottle.1.tar.gz https://bintray.com/bkryza/onedata-cellar/download_file?file_path=boost-python-1.63.0.${OSX_CODENAME}.bottle.1.tar.gz
   - brew install ../boost-python-1.63.0.bottle.1.tar.gz
   - brew install libtool
