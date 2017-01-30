@@ -34,7 +34,7 @@ before_install:
   - brew outdated poco || brew upgrade poco
   - brew install libevent
   - brew outdated openssl || brew upgrade openssl
-  - brew install nspr && brew unlink nss && brew link --force nss
+  - brew install nspr && brew unlink nspr && brew link --force nspr
   - brew install nss && brew unlink nss && brew link --force nss
   - brew install tbb && brew unlink tbb && brew link --force tbb
   - brew install glog && brew unlink glog && brew link glog
