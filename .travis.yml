@@ -12,11 +12,6 @@ matrix:
       compiler: clang
       env: ONEDATA_GIT_URL="https://github.com/onedata" OSX_CODENAME=sierra
 
-    - os: osx
-      osx_image: xcode8 # Build on macOS El Capitan (10.11)
-      compiler: clang
-      env: ONEDATA_GIT_URL="https://github.com/onedata" OSX_CODENAME=el_capitan
-
 cache:
   directories:
     - $HOME/Library/Caches/Homebrew
