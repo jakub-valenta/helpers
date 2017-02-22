@@ -26,7 +26,7 @@ before_install:
   - brew install libtool
   - brew install libsodium && brew link --force libsodium
   - brew install ninja && brew link --force ninja
-  - brew install poco
+  - brew outdated poco || brew upgrade poco
   - brew outdated libevent || brew upgrade libevent
   - brew outdated openssl || brew upgrade openssl
   - brew install nspr && brew unlink nspr && brew link --force nspr
