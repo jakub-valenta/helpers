@@ -10,7 +10,7 @@ matrix:
     - os: osx
       osx_image: xcode8.2 # Build on macOS Sierra (10.12)
       compiler: clang
-      env: ONEDATA_GIT_URL="https://github.com/onedata" OSX_CODENAME=sierra PKG_CONFIG_PATH="/usr/local/opt/e2fsprogs/lib/pkgconfig:/usr/local/opt/openssl/lib/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/opt/nss/lib/pkgconfig"
+      env: ONEDATA_GIT_URL="https://github.com/onedata" OSX_CODENAME=sierra PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/opt/nss/lib/pkgconfig"
 
 cache:
   directories:
